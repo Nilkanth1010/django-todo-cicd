@@ -1,12 +1,36 @@
-steps:
-  - checkout
-  - run:
-      name: Install dependencies with poetry
-      command: |
-        curl -sSL https://install.python-poetry.org | python3 -
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: python:3.8  # Choose the appropriate Python version for your project
+
+    steps:
+      - checkout
+
+      # Setup environment (e.g., install dependencies)
+      - run:
+          name: Install dependencies with poetry
+          command: |
+            curl -sSL https://install.python-poetry.org | python3 -
         poetry install
-  - run:
-      name: Run tests
-      command: |
-        python manage.py test
-  # Other steps...
+
+      # Run tests
+      - run:
+          name: Run tests
+          command: |
+            python manage.py test
+
+      # Additional steps for your CI/CD process can be added here
+      # - run:
+      #     name: Additional steps
+      #     command: |
+      #       Your command here
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+
+
+
